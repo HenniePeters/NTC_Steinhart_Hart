@@ -1,0 +1,39 @@
+#######################################
+# Syntax Coloring Map for NTC
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+NTC	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+SetDecimals	KEYWORD2
+GetBoilingPointWater	KEYWORD2
+SetScale	KEYWORD2
+SetMaxADC	KEYWORD2
+SetValueADC	KEYWORD2
+SetMethod	KEYWORD2
+SetHysteresis	KEYWORD2
+SetSeriesResistor	KEYWORD2
+SetCorrection	KEYWORD2
+GetTemperature	KEYWORD2
+GetTemperature	KEYWORD2
+c_str	KEYWORD2
+LN	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+NTC_TOP	LITERAL1
+NTC_BOTTOM	LITERAL1
+SCALE_C	LITERAL1
+SCALE_F	LITERAL1
+SCALE_K	LITERAL1
+EQUATION_3	LITERAL1
+EQUATION_4	LITERAL1

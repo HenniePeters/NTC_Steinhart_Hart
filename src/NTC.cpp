@@ -69,13 +69,7 @@ double NTC::GetBoilingPointWater( double mBar ) {
     } else if ( Scale == SCALE_K ) {
         return centigrade + 273.15;
     } else {
-#ifndef NDEBUG
-        std::cout << "\n\nUnknown scale, use SetScale(SCALE_C), SetScale(SCALE_F) or SetScale(SCALE_K)\n\n"
-                  << std::endl;
-#endif
-        assert( Scale >= SCALE_C );
-        assert( Scale <= SCALE_K );
-        return 0.0;
+        assert( Scale == SCALE_C || Scale == SCALE_F || Scale == SCALE_K );
     }
 }
 //==========================================================================================

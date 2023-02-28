@@ -15,8 +15,8 @@ NTC	KEYWORD1
 SetDecimals	KEYWORD2
 GetBoilingPointWater	KEYWORD2
 SetScale	KEYWORD2
-SetMaxADC	KEYWORD2
-SetValueADC	KEYWORD2
+SetMaxAdc	KEYWORD2
+SetValueAdc	KEYWORD2
 SetMethod	KEYWORD2
 SetHysteresis	KEYWORD2
 SetSeriesResistor	KEYWORD2

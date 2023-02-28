@@ -9,7 +9,7 @@
 
 // OR
 
-class NTC ntc(0.0008422026204827800000, 
+class NTC ntc(0.0008422026204827800000,
               0.0002626547700231960000,
               0.0000001187502823269870);
 
@@ -26,7 +26,7 @@ void setup() {
                                     // and use .GetTemperature() to convert the temperature
                                     // or use .GetTemperature(SCALE_F) to convert to Fahrenheit
 
-    ntc.SetMaxADC( 4095 );          // Max ADC value: 10-bit AVR=1023, 12-bit STM32=4095
+    ntc.SetMaxAdc( 4095 );          // Max ADC value: 10-bit AVR=1023, 12-bit STM32=4095
                                     // AVCC is assumed as reference (also connect the voltage divider to AVCC)
 
     ntc.SetMethod( NTC_BOTTOM );    // NTC_TOP or NTC_BOTTOM
@@ -35,7 +35,7 @@ void setup() {
 
     ntc.SetSeriesResistor( 4700 );  // A series resistor of 4k7
                                     // for best performance (the highest resolution in ADC reading) take the resistance
-                                    // of the NTC at both ends of the scale. To calculate the series resistance to use:
+                                    // of the NTC at both ends of the scale. To calculate the series resistance use:
                                     // Rs = SQRT( R-min * R-max )
 
     ntc.SetDecimals( 1 );           // The c_str method now reports the temperature with 1 decimal
@@ -78,7 +78,7 @@ void setup() {
 void loop() {
     char buf[16]; // provide a buffer to the c_str function to hold the formatted conversion result
     int adc = analogRead( ADC_PIN );
-    ntc.SetValueADC( adc );
+    ntc.SetValueAdc( adc );
     Serial.print( "ADC=" );
     Serial.println( adc );
     ntc.SetDecimals( 0 ); // The c_str method now reports the temperature WITHOUT decimals

@@ -1,11 +1,10 @@
-//#include <iostream>
-#define NDEBUG
+//#define NDEBUG
 #include <assert.h> // assert
 #include "NTC.h"
 //==========================================================================================
 NTC::NTC( const double a, const double b, const double c, const double d ) {
-    NTC( a, b, c ); // call the 3 parameter constructor
-    D = d;          // and add the missing details for the fourth parameter
+    NTC( a, b, c ); // call the 3 coefficient constructor
+    D = d;          // and add the missing details for thr fourth parameter
     Equation = EQUATION_4;
 }
 //==========================================================================================
@@ -13,6 +12,7 @@ NTC::NTC( const double a, const double b, const double c ) {
     A = a;
     B = b;
     C = c;
+    dir = 1;
     Method = NTC_BOTTOM;
     Scale = SCALE_C;
     bHyst = false;
@@ -24,19 +24,20 @@ NTC::NTC( const double a, const double b, const double c ) {
     SetDecimals( 1 );
 }
 //==========================================================================================
-void NTC::SetCorrection( double correction ) {
-    Correct = correction;
-}
-//==========================================================================================
 void NTC::SetDecimals( uint8_t decimals ) {
     decim = decimals;
     if ( decimals == 0 ) {
-        strcpy( fmt, "%0d" );
+        strcpy( fmt, "%d" );
     } else {
         sprintf( fmt, "%cd.%c0%dd", '\%', '\%', decim );
     }
     Factor = pow( 10.0, decim );
     Rounder = 1.0 / pow( 10.0, decim ) / 2.0;
+    if ( bHyst ) {
+        Hyster = 1;
+    } else {
+        Hyster = 0;
+    }
 }
 //==========================================================================================
 char *NTC::c_str( char *buf, uint8_t scale ) {
@@ -51,13 +52,15 @@ char *NTC::c_str( char *buf ) {
     char *p = buf;
     double f = GetTemperature();
     if ( f <= 0 - Rounder ) {
-        *p = '-';
-        p++;
-        *p = '\0';
+        *p++ = '-';
     }
     f = abs( f ) + Rounder;
-    sprintf( p, fmt, (int)f, (int)( f * (int)Factor ) % (int)Factor );
+    sprintf( p, fmt, (int)f, (int)( f * Factor ) % (int)Factor );
     return buf;
+}
+//==========================================================================================
+void NTC::SetCorrection( double correction ) {
+    Correct = correction;
 }
 //==========================================================================================
 double NTC::GetBoilingPointWater( double mBar ) {
@@ -81,8 +84,28 @@ void NTC::SetMaxAdc( uint16_t max ) {
     MaxAdc = (double)max;
 }
 //==========================================================================================
-void NTC::SetValueAdc( uint16_t adc ) {
-    Adc = (double)adc;
+void NTC::SetValueAdc( uint16_t value ) {
+    static double curr_pivot = 0.0;
+    static double prev_pivot = 0.0;
+    static double prev_pos = 0.0;
+    if ( ( bHyst && value < prev_pos && dir == 1 ) ||
+         ( bHyst && value > prev_pos && dir == -1 ) ) { // direction has changed
+        dir = 0 - dir;
+        if ( fabs( fabs( curr_pivot ) - fabs( value ) ) <
+             Hyster ) {              // direction has changed but value change is within 'Hyster' from
+            curr_pivot = prev_pivot; // the last pivot, reuse the previous pivot and ignore current position
+        } else {
+            prev_pivot = curr_pivot; // direction has changed, save the current pivot and set the new pivot
+            curr_pivot = value;
+            if ( fabs( fabs( value ) - fabs( prev_pos ) ) >
+                 Hyster ) { // skip value if turning point is within 'Hyster' from last position
+                Adc = value;
+            }
+        }
+    } else {
+        Adc = value; // going further in the same direction or making big steps
+    }
+    prev_pos = value;
 }
 //==========================================================================================
 void NTC::SetMethod( uint8_t method ) {

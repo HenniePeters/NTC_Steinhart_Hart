@@ -6,8 +6,9 @@
 #include <stdio.h>
 #include <math.h> // log
 //==========================================================================================
-#define LN log // in math.h, (natural logaritm) ln is called "log" and the
-               // "real log" is called "log10" (how confusing)
+#define LN                                                                                                             \
+    log // in math.h, (natural logaritm) ln is called "log" and the
+        // "real log" is called "log10" (how confusing)
 #define NTC_TOP 1
 #define NTC_BOTTOM 2
 
@@ -22,6 +23,7 @@
 class NTC {
   private:
     uint8_t Method, Scale, Equation;
+    int8_t dir; // for hysteresis
     uint8_t decim;
     double A, B, C, D, MaxAdc, Adc, Rt, Rs, mBar;
     double Hyster, Factor, Rounder, Correct;

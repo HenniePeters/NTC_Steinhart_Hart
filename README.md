@@ -1,4 +1,4 @@
-# NTC_Steinhart_Hart
+# NTC_Steinhart_Hart (Arduino library)
 This Arduino NTC class supports both 3 and 4 coefficient Steinhart/Hart equations  
   
 For Vishay NTC's you can find the 3 Steinhart/Hart coefficients here:  

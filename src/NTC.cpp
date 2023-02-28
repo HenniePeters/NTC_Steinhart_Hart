@@ -73,6 +73,7 @@ double NTC::GetBoilingPointWater( double mBar ) {
         return centigrade + 273.15;
     } else {
         assert( Scale == SCALE_C || Scale == SCALE_F || Scale == SCALE_K );
+        return 0.0; // to make the compiler happy ( warning: control reaches... )
     }
 }
 //==========================================================================================
@@ -116,6 +117,10 @@ void NTC::SetHysteresis( bool Hysteresis ) {
     bHyst = Hysteresis;
 }
 //==========================================================================================
+void NTC::SetHysteresis( double Hysteresis ) {
+    Hyster = Hysteresis;
+}
+//==========================================================================================
 void NTC::SetSeriesResistor( long Resistance ) {
     Rs = (double)Resistance; // Rs = series resistor
 }
@@ -157,7 +162,7 @@ double NTC::GetTemperature( void ) {
         return Kelvin + Correct;
     } else {
         assert( Scale == SCALE_C || Scale == SCALE_F || Scale == SCALE_K );
-        return 0.0;
+        return 0.0; // to make the compiler happy ( warning: control reaches... )
     }
 }
 //==========================================================================================

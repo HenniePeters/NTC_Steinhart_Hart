@@ -12,19 +12,19 @@
 #define NTC_TOP 1
 #define NTC_BOTTOM 2
 
-#define SCALE_C 1
-#define SCALE_F 2
-#define SCALE_K 3
-
 #define EQUATION_3 3
 #define EQUATION_4 4
+
+#define SCALE_C 5
+#define SCALE_F 6
+#define SCALE_K 7
 
 //==========================================================================================
 class NTC {
   private:
     uint8_t Method, Scale, Equation;
-    int8_t dir; // for hysteresis
-    uint8_t decim;
+    int8_t dir;    // for hysteresis
+    uint8_t decim; // for c_str() only
     double A, B, C, D, MaxAdc, Adc, Rt, Rs, mBar;
     double Hyster, Factor, Rounder, Correct;
     bool bHyst;
@@ -37,9 +37,10 @@ class NTC {
     double GetBoilingPointWater( double mBar );
     void SetScale( uint8_t scale );
     void SetMaxAdc( uint16_t max );
-    void SetValueAdc( uint16_t Adc );
+    void SetValueAdc( uint16_t adc );
     void SetMethod( uint8_t method );
     void SetHysteresis( bool Hysteresis );
+    void SetHysteresis( double Hysteresis );
     void SetSeriesResistor( long Resistance );
     void SetCorrection( double Correction );
     double GetTemperature( uint8_t scale );
